@@ -7,14 +7,19 @@ def calcular_linhas_caracteres(texto):
     linha_atual = ""
 
     for palavra in palavras:
-        if caracteres_na_linha + len(palavra) > caracteres_por_linha:
+        if caracteres_na_linha + len(palavra) + (1 if caracteres_na_linha > 0 else 0) > caracteres_por_linha:
             linhas += 1
-            linhas_texto.append(linha_atual.rstrip())  # Adiciona a linha atual à lista e remove o espaço final
-            linha_atual = palavra + " "  # Inicia nova linha com a palavra atual
-            caracteres_na_linha = len(palavra) + 1  # +1 para contar o espaço
-        else:
-            linha_atual += palavra + " "
-            caracteres_na_linha += len(palavra) + 1  # +1 para o espaço
+            linhas_texto.append(linha_atual.rstrip())
+            linha_atual = ""
+            caracteres_na_linha = 0
+
+        while len(palavra) > caracteres_por_linha:
+            linhas += 1
+            linhas_texto.append(palavra[:caracteres_por_linha])
+            palavra = palavra[caracteres_por_linha:]
+
+        linha_atual += palavra + " "
+        caracteres_na_linha += len(palavra) + 1
 
     if caracteres_na_linha > 0:
         linhas += 1
